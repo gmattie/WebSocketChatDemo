@@ -1,4 +1,7 @@
-const webSocket = new WebSocket(`ws://${window.location.hostname}:443/`);
+const wsDomain = window.location.hostname;
+const wsScheme = wsDomain === "localhost" ? "ws" : "wss";
+const wsPort = 3000;
+const webSocket = new WebSocket(`${wsScheme}://${wsDomain}:${wsPort}/`);
 webSocket.onmessage = (event) => {
   console.log(event)
   document.getElementById("messages").innerHTML += 
