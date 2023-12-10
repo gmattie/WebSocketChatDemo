@@ -6,13 +6,9 @@ const PORT = process.env.PORT || 3000;
 
 const webSocketServer = new WebSocketServer({ noServer: true })
 webSocketServer.on("connection", (ws) => {
-  console.log("New client connected");
-
   ws.send("Connection Established");
-  ws.on("close", () => console.log("Client has disconnected"));
   ws.on("message", (data) => {
     webSocketServer.clients.forEach((client) => {
-      console.log(`Broadcasted message: ${data}`);
       client.send(data.toString());
     })
   })

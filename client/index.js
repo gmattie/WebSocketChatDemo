@@ -1,19 +1,28 @@
 const wsDomain = window.location.hostname;
 const wsScheme = wsDomain === "localhost" ? "ws" : "wss";
-const wsPort = 443;
+const wsPort = wsDomain === "localhost" ? 3000 : 443;
 const webSocket = new WebSocket(`${wsScheme}://${wsDomain}:${wsPort}/`);
 webSocket.onmessage = (event) => {
-  console.log(event)
-  document.getElementById("messages").innerHTML += 
-    "Message from server: " + event.data + "<br>";
-};
-webSocket.addEventListener("open", () => console.log("We are connected"));
+  let message;
 
+  try {
+    const data = JSON.parse(event.data);
+    message = `${data.name}: ${data.message}`
+  }
+  catch (error) {
+    message = event.data
+  }
+
+  document.getElementById("messages").innerHTML += message + "<br>";
+};
+
+const inputName = document.getElementById("name")
 const inputMessage = document.getElementById("message")
+
 const sendMessage = (event) => {
   event.preventDefault();
   
-  webSocket.send(inputMessage.value)
+  webSocket.send(JSON.stringify({ name: inputName.value, message: inputMessage.value }))
   inputMessage.value = ""
 }
 
