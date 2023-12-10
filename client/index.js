@@ -1,6 +1,6 @@
 const wsDomain = window.location.hostname;
 const wsScheme = wsDomain === "localhost" ? "ws" : "wss";
-const wsPort = 3000;
+const wsPort = 443;
 const webSocket = new WebSocket(`${wsScheme}://${wsDomain}:${wsPort}/`);
 webSocket.onmessage = (event) => {
   console.log(event)
